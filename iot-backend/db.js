@@ -1,7 +1,7 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
-const dbPath = path.resolve(__dirname, 'movements.db');
+const dbPath = path.resolve(__dirname, 'data.db');
 
 // conexão com o banco de dados SQLite
 const db = new sqlite3.Database(dbPath, (err) => {
@@ -16,6 +16,14 @@ db.run(`CREATE TABLE IF NOT EXISTS movements (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
 )`);
+
+db.run(`
+CREATE TABLE IF NOT EXISTS temperature (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    temperature REAL NOT NULL,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+)
+`);
 
 // inserir um registro de movimento
 function addMovement() {
@@ -40,7 +48,22 @@ function getAllMovements(callback) {
     });
 }
 
+function addTemperature(temperature, callback) {
+    const query = `INSERT INTO temperature (temperature) VALUES (?)`;
+    db.run(query, [temperature], function (err) {
+        if (err) {
+            console.error('Erro ao salvar temperatura:', err.message);
+            if (callback) callback(err);
+        } else {
+            console.log('Temperatura registrada no banco de dados.');
+            if (callback) callback(null);
+        }
+    });
+}
+
 module.exports = {
+    db,
     addMovement,
-    getAllMovements
+    getAllMovements,
+    addTemperature
 };

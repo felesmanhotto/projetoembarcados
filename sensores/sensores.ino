@@ -150,8 +150,8 @@ void loop(void) {
   float voltage = analogValue * vRef / adcMax; // Converte o valor analógico para Volts
   float temperature = voltage / (mvPerC / 1000); // Converte Volts para °C
 
-  Serial.print(temperature);
-  Serial.println("ºC");
+  //Serial.print(temperature);
+  //Serial.println("ºC");
 
   sendTemperature(temperature);
 
@@ -160,8 +160,8 @@ void loop(void) {
   int motionState = digitalRead(motionPin);             // Lê o estado do sensor de movimento
   String motion = (motionState == HIGH) ? "Movimento Detectado" : "Sem Movimento";
 
-  Serial.print("Estado do sensor de movimento: ");
-  Serial.println(motion);
+  //Serial.print("Estado do sensor de movimento: ");
+  //Serial.println(motion);
 
   sendMotion(motion);
 

@@ -1,42 +1,83 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const port = 3000;
 
-const { addMovement, getAllMovements } = require('./db');
+// Habilita o CORS para todas as rotas
+app.use(cors());
+app.use(express.json());
 
+const { db, addMovement, getAllMovements, addTemperature } = require('./db');
 
 //http://192.168.48.148:3000/
 
 let lastTemperature = null;
+let lastTemperatureTime = null; 
 let lastMotion = null;
 let alarmActivated = false;
 let lastNotificationTime = null;
-
-// Middleware para ler JSON
-app.use(express.json());
 
 
 // ligar/desligar o alarme (curl -X POST http://192.168.48.148:3000/alarm/toggle)
 app.post('/alarm/toggle', (req, res) => {
     alarmActivated = !alarmActivated;
-    res.send(`Alarme ${alarmActivated ? 'ativado' : 'desativado'}`);
+    res.send(alarmActivated ? 'ativado' : 'desativado');
     console.log(`Alarme ${alarmActivated ? 'ativado' : 'desativado'}`);     
 });
 
 
 app.get('/alarm', (req, res) => {
-    res.send(`O alarme está ${alarmActivated ? 'ativado' : 'desativado'}`);
+    res.send(alarmActivated ? 'ativado' : 'desativado');
 });
 
 
 // exibir os dados de temperatura no navegador
-app.get('/sensor/temperature', (req, res) => {
+app.get('/temperature/last', (req, res) => {
     if (lastTemperature !== null) {
-        res.send(`Última temperatura recebida: ${lastTemperature}°C`);
+        res.json({ temperature: lastTemperature });
     } else {
-        res.send('Nenhuma temperatura recebida ainda');
+        res.status(404).send('Nenhuma temperatura registrada ainda.');
     }
 });
+
+
+app.get('/temperature/average', (req, res) => {
+    db.get(
+        `SELECT AVG(temperature) AS average FROM temperature WHERE timestamp >= datetime('now', '-1 hour')`,
+        (err, row) => {
+            if (err) {
+                console.error('Erro ao calcular a média da última hora:', err.message);
+                return res.status(500).send('Erro ao calcular a média da última hora.');
+            }
+            res.json({ average: row.average });
+        }
+    );
+});
+
+
+// receber dados de temperatura
+app.post('/sensor/temperature', (req, res) => {
+    const temperature = req.body.temperature;
+    console.log(`Temperatura recebida: ${lastTemperature}°C`);
+
+    lastTemperature = temperature
+
+    const currentTime = new Date().getTime();
+    if (!lastTemperatureTime || (currentTime - lastTemperatureTime) >= 1000) {
+        lastTemperatureTime = currentTime;
+
+        addTemperature(temperature, (err) => {
+            if (err) {
+                return res.status(500).send('Erro ao salvar temperatura no banco de dados.');
+            }
+            res.send('Temperatura registrada com sucesso.');
+        });
+    } else {
+        console.log('Temperatura recebida, mas dentro do intervalo de 5 minutos.'); 
+        res.send('Temperatura recebida, mas não registrada (intervalo de 5 minutos não alcançado).');
+    }
+});
+
 
 // exibir os dados de movimento no navegador
 app.get('/sensor/motion', (req, res) => {
@@ -47,20 +88,13 @@ app.get('/sensor/motion', (req, res) => {
     }
 });
 
-// receber dados de temperatura
-app.post('/sensor/temperature', (req, res) => {
-    lastTemperature = req.body.temperature;
-    console.log(`Temperatura recebida: ${lastTemperature}°C`);
-    res.send('Temperatura recebida com sucesso');
-});
-
 
 // receber dados do sensor de movimento (curl -X POST http://localhost:3000/sensor/motion -H "Content-Type: application/json" -d "{\"motion\": \"Movimento\"}")
 app.post('/sensor/motion', (req, res) => {
     lastMotion = req.body.motion;
     console.log(`Estado do sensor de movimento: ${lastMotion}`);
     
-    if (alarmActivated && lastMotion === 'Movimento') {
+    if (alarmActivated && lastMotion === 'Movimento Detectado') {
         // verifica se 10 minutos se passaram desde o último registro antes de prosseguir
         const currentTime = new Date().getTime();
         if (!lastNotificationTime || (currentTime - lastNotificationTime) > 10 * 60 * 1000) {
@@ -85,8 +119,7 @@ app.get('/movements', (req, res) => {
         if (err) {
             res.status(500).send('Erro ao obter movimentos');
         } else {
-            console.log('Registros:', rows);
-            res.send('Movimentos impressos no console');
+            res.send(rows);
         }
     });
 });
