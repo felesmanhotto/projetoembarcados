@@ -1,0 +1,43 @@
+.movements-container {
+    text-align: center;
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.movements-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.movements-table {
+    margin: 0 auto;
+    border-collapse: collapse;
+    width: 90%;
+    font-family: Arial, sans-serif;
+}
+
+.movements-table th, .movements-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.movements-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.movements-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.movements-table tr:hover {
+    background-color: #f1f1f1;
+}

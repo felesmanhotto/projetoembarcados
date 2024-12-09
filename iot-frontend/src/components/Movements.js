@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './styles/MovementLogs.css';
 
 const Movements = () => {
     const [movements, setMovements] = useState([]); // Estado inicial como array vazio

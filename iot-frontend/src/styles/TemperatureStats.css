@@ -1,0 +1,27 @@
+.temperature-container {
+    text-align: center;
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.temperature-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.temperature-data {
+    font-size: 18px;
+    margin: 8px 0;
+    color: #555;
+}
+
+.temperature-error {
+    color: red;
+    font-weight: bold;
+}
