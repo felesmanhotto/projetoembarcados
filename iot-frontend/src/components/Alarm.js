@@ -32,19 +32,13 @@ const Alarm = () => {
     }, []);
 
     return (
-        <div style={{ textAlign: 'center', marginTop: '20px' }}>
-            <h2>Estado do Alarme: {alarmState ? 'Ligado' : 'Desligado'}</h2>
+        <div className="alarm-container">
+            <h2 className="alarm-status">
+                Estado do Alarme: {alarmState ? 'Ligado' : 'Desligado'}
+            </h2>
             <button
                 onClick={toggleAlarm}
-                style={{
-                    padding: '10px 20px',
-                    fontSize: '16px',
-                    backgroundColor: alarmState ? '#ff4d4d' : '#4caf50',
-                    color: '#fff',
-                    border: 'none',
-                    borderRadius: '5px',
-                    cursor: 'pointer',
-                }}
+                className={`alarm-button ${alarmState ? 'ligado' : ''}`}
             >
                 {alarmState ? 'Desligar Alarme' : 'Ligar Alarme'}
             </button>

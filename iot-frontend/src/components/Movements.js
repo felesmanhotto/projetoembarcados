@@ -31,29 +31,27 @@ const Movements = () => {
     }, []);
 
     return (
-        <div style={{ textAlign: 'center', marginTop: '20px' }}>
-            <h2>Registros do Alarme</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <table style={{ margin: '0 auto', borderCollapse: 'collapse', width: '50%' }}>
+        <div className="movements-container">
+            <h2 className="movements-title">Registros de Movimentos</h2>
+            {error && <p className="temperature-error">{error}</p>}
+            <table className="movements-table">
                 <thead>
                     <tr>
-                        <th style={{ border: '1px solid black', padding: '8px' }}>Horário</th>
+                        <th>ID</th>
+                        <th>Horário</th>
                     </tr>
                 </thead>
                 <tbody>
                     {movements.length > 0 ? (
                         movements.map((movement) => (
                             <tr key={movement.id}>
-                                <td style={{ border: '1px solid black', padding: '8px' }}>
-                                    {new Date(movement.timestamp).toLocaleString()}
-                                </td>
+                                <td>{movement.id}</td>
+                                <td>{new Date(movement.timestamp).toLocaleString()}</td>
                             </tr>
                         ))
                     ) : (
                         <tr>
-                            <td colSpan="2" style={{ textAlign: 'center', padding: '8px' }}>
-                                Nenhum registro encontrado.
-                            </td>
+                            <td colSpan="2">Nenhum registro encontrado.</td>
                         </tr>
                     )}
                 </tbody>

@@ -1,15 +1,16 @@
 import React from 'react';
 import Alarm from './components/Alarm';
-import Movements from './components/Movements';
-import Temperature from './components/Temperature';
+import MovementLogs from './components/Movements';
+import TemperatureStats from './components/Temperature';
+import './components/styles/App.css';
 
 const App = () => {
     return (
-        <div>
-            <h1 style={{ textAlign: 'center', marginTop: '20px' }}>Controle Sala de Servidor</h1>
+        <div className="container">
+            <h1>Controle Sala de Servidor</h1>
             <Alarm />
-            <Temperature />
-            <Movements />
+            <TemperatureStats />
+            <MovementLogs />
         </div>
     );
 };

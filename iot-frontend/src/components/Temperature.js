@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import 'styles/TemperatureStats.css';
+import './styles/TemperatureStats.css';
 
 const Temperature = () => {
     const [lastTemperature, setLastTemperature] = useState(null);
@@ -44,15 +44,18 @@ const Temperature = () => {
     }, []);
 
     return (
-        <div style={{ textAlign: 'center', marginTop: '20px' }}>
-            <h2>Estatísticas de Temperatura</h2>
-            <p>
+        <div className="temperature-container">
+            <h2 className="temperature-title">Estatísticas de Temperatura</h2>
+            {error && <p className="temperature-error">{error}</p>}
+            <p className="temperature-data">
                 <strong>Última Temperatura:</strong>{' '}
-                {lastTemperature ? `${lastTemperature.temperature}°C` : 'Carregando...'}
+                {lastTemperature ? `${lastTemperature}°C` : 'Carregando...'}
             </p>
-            <p>
+            <p className="temperature-data">
                 <strong>Média da Última Hora:</strong>{' '}
-                {averageTemperature !== null ? `${averageTemperature.toFixed(2)}°C` : 'Carregando...'}
+                {averageTemperature !== null
+                    ? `${averageTemperature.toFixed(2)}°C`
+                    : 'Sem dados suficientes'}
             </p>
         </div>
     );

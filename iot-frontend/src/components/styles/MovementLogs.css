@@ -2,17 +2,18 @@
     text-align: center;
     margin-top: 20px;
     padding: 20px;
-    border: 1px solid #ccc;
+    border: 2px solid #26c6da;
     border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(145deg, #e0f7fa, #ffffff);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1), inset 0px 2px 4px rgba(255, 255, 255, 0.2);
 }
 
 .movements-title {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: bold;
     margin-bottom: 15px;
     color: #333;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .movements-table {
@@ -20,16 +21,19 @@
     border-collapse: collapse;
     width: 90%;
     font-family: Arial, sans-serif;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.movements-table th, .movements-table td {
+.movements-table th,
+.movements-table td {
     border: 1px solid #ddd;
-    padding: 10px;
+    padding: 12px;
     text-align: center;
 }
 
 .movements-table th {
-    background-color: #f4f4f4;
+    background-color: #26c6da;
+    color: white;
     font-weight: bold;
     font-size: 16px;
 }
@@ -39,5 +43,5 @@
 }
 
 .movements-table tr:hover {
-    background-color: #f1f1f1;
+    background-color: #e0f7fa;
 }
